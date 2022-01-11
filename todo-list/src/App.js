@@ -1,19 +1,21 @@
 import  style  from './index.module.css';
-
+import Chevron from './icons/Chevron.png';
 
 function App() {
   return (
     <>
+      <h1>todos</h1>
       <div className={style.todo}>
         <header className={style.header}>
-          <h1>todos</h1>
-          <input type="checkbox" />
+          <button>
+            <img src={Chevron}/>
+          </button>
           <input className={style.input}  name="name" placeholder="What needs to be done?" />
         </header>
         <section className={style.section}>
-          <ul>
-            <li className={style.list}>
-                <input type={style.checkbox}/>
+          <ul className={style.list}>
+            <li>
+                <input type="checkbox" />
                 <label>fffff</label>
                 <button className={style.destroy}></button>
             </li>
