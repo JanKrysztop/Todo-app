@@ -14,18 +14,20 @@ function App() {
         </header>
         <section className={style.section}>
           <ul className={style.list}>
-            <li>
-                <input type="checkbox" />
-                <label>fffff</label>
+            <li className={style.toggle}>
+                <input type='checkbox' id='thing'/>
+                <label for='thing'>AAAA</label>
                 <button className={style.destroy}></button>
             </li>
           </ul>
         </section>
         <footer className={style.footer}>
           <p className={style.todoCount}><span>0</span> items left</p>
-          <button>All</button>
-          <button>Active</button>
-          <button>Completed</button>
+          <div className={style.buttons}>
+            <button>All</button>
+            <button>Active</button>
+            <button>Completed</button>
+          </div>
         </footer>
       </div>
     </>
