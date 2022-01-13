@@ -1,33 +1,31 @@
-import  style  from './index.module.css';
-import Chevron from './icons/Chevron.png';
+import style from "./index.module.css";
+import Todo from "./components/Todo.js";
+import Form from "./components/Form";
+import FilterButton from "./components/FilterButton";
+import Counter from "./components/Counter";
 
-function App() {
+
+function App(props) {
+  const taskList = props.tasks.map((task) => (
+    <Todo
+      id={task.id}
+      name={task.name}
+      completed={task.completed}
+      key={task.id}
+    />
+  ));
+
   return (
     <>
       <h1>todos</h1>
       <div className={style.todo}>
-        <header className={style.header}>
-          <button>
-            <img src={Chevron}/>
-          </button>
-          <input className={style.input}  name="name" placeholder="What needs to be done?" />
-        </header>
-        <section className={style.section}>
-          <ul className={style.list}>
-            <li className={style.toggle}>
-                <input type='checkbox' id='thing'/>
-                <label for='thing'>AAAA</label>
-                <button className={style.destroy}></button>
-            </li>
-          </ul>
-        </section>
+        <Form />
+
+        <ul className={style.list}>{taskList}</ul>
+
         <footer className={style.footer}>
-          <p className={style.todoCount}><span>0</span> items left</p>
-          <div className={style.buttons}>
-            <button>All</button>
-            <button>Active</button>
-            <button>Completed</button>
-          </div>
+          <Counter />
+          <FilterButton />
         </footer>
       </div>
     </>
