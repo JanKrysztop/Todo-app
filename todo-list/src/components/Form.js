@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "../index.module.css";
 import Chevron from "../icons/Chevron.png";
 
 function Form(props) {
+  const [name, setName] = useState('');
+
+
+  function handleChange(e) {
+    const empty = e.target.value.trim();
+    console.log(empty)
+    if(empty !== ""){
+      setName(e.target.value);
+    }
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    props.addTask("helo");
+    props.addTask(name);
+    setName("")
   }
 
   return (
@@ -14,9 +26,13 @@ function Form(props) {
         <img src={Chevron} alt="chevron" />
       </button> 
       <input
+        type="text"
         className={style.input}
-        name="name"
+        name="text"
+        autoComplete="off"
         placeholder="What needs to be done?"
+        value={name}
+        onChange={handleChange}
       />
     </form>
   );

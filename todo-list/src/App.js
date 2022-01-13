@@ -1,12 +1,22 @@
+import React, { useState } from "react";
 import style from "./index.module.css";
 import Todo from "./components/Todo.js";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
-import Counter from "./components/Counter";
 
+import { nanoid } from "nanoid";
 
 function App(props) {
-  const taskList = props.tasks.map((task) => (
+  const [tasks, setTasks] = useState(props.tasks);
+
+  function addTask(name) {
+    const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
+    setTasks([...tasks, newTask]);
+  }
+
+  
+
+  const taskList = tasks.map((task) => (
     <Todo
       id={task.id}
       name={task.name}
@@ -15,16 +25,21 @@ function App(props) {
     />
   ));
 
+  const tasksNoun = taskList.length !== 1 ? "items" : "item"
+  const footerCounter = `${taskList.length} ${tasksNoun}` ;
+
   return (
     <>
       <h1>todos</h1>
       <div className={style.todo}>
-        <Form />
+        <Form addTask={addTask} />
 
         <ul className={style.list}>{taskList}</ul>
 
         <footer className={style.footer}>
-          <Counter />
+          <p className={style.todoCount}>
+            {footerCounter} left
+          </p>
           <FilterButton />
         </footer>
       </div>
