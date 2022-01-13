@@ -5,19 +5,18 @@ import Chevron from "../icons/Chevron.png";
 function Form(props) {
   const [name, setName] = useState('');
 
-
   function handleChange(e) {
-    const empty = e.target.value.trim();
-    console.log(empty)
-    if(empty !== ""){
-      setName(e.target.value);
-    }
+   setName(e.target.value);
   }
 
   function handleSubmit(e) {
-    e.preventDefault();
-    props.addTask(name);
-    setName("")
+    if(name.trim() !== "") {
+      e.preventDefault();
+      props.addTask(name);
+      setName("")
+    } else {
+      e.preventDefault();
+    }
   }
 
   return (
