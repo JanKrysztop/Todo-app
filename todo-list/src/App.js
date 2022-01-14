@@ -14,7 +14,30 @@ function App(props) {
     setTasks([...tasks, newTask]);
   }
 
-  
+  function toggleTaskCompleted(id) {
+    const updateTask = tasks.map((task) => {
+      if (id === task.id) {
+        return { ...task, completed: !task.completed };
+      }
+      return task;
+    });
+    setTasks(updateTask);
+  }
+
+  function deleteTask(id) {
+    const remainingTasks = tasks.filter((task) => id !== task.id);
+    setTasks(remainingTasks);
+  }
+
+  function editTask(id, newName) {
+    const editedTaskList = tasks.map((task) => {
+      if (id === task.id) {
+        return { ...task, name: newName };
+      }
+      return task;
+    });
+    setTasks(editedTaskList);
+  }
 
   const taskList = tasks.map((task) => (
     <Todo
@@ -22,11 +45,14 @@ function App(props) {
       name={task.name}
       completed={task.completed}
       key={task.id}
+      toggleTaskCompleted={toggleTaskCompleted}
+      deleteTask={deleteTask}
+      editTask={editTask}
     />
   ));
 
-  const tasksNoun = taskList.length !== 1 ? "items" : "item"
-  const footerCounter = `${taskList.length} ${tasksNoun}` ;
+  const tasksNoun = taskList.length !== 1 ? "items" : "item";
+  const footerCounter = `${taskList.length} ${tasksNoun}`;
 
   return (
     <>
@@ -37,9 +63,7 @@ function App(props) {
         <ul className={style.list}>{taskList}</ul>
 
         <footer className={style.footer}>
-          <p className={style.todoCount}>
-            {footerCounter} left
-          </p>
+          <p className={style.todoCount}>{footerCounter} left</p>
           <FilterButton />
         </footer>
       </div>
