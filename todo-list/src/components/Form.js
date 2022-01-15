@@ -3,27 +3,32 @@ import style from "../index.module.css";
 import Chevron from "../icons/Chevron.png";
 
 function Form(props) {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
+
 
   function handleChange(e) {
-   setName(e.target.value);
+    setName(e.target.value);
   }
 
   function handleSubmit(e) {
-    if(name.trim() !== "") {
+    if (name.trim() !== "") {
       e.preventDefault();
       props.addTask(name);
-      setName("")
+      setName("");
     } else {
       e.preventDefault();
     }
   }
 
+
+  
+
   return (
     <form className={style.header} onSubmit={handleSubmit}>
-       <button>
+      {/* tutaj wrzuciłem atrybut type zeby przy wcisnięciu button nie dodawał nowego taska */}
+      <button type="button" onClick={() => props.toggleAllCompleted(props.task)}>
         <img src={Chevron} alt="chevron" />
-      </button> 
+      </button>
       <input
         type="text"
         className={style.input}

@@ -9,20 +9,20 @@ function Todo(props) {
     setNewName(e.target.value);
   }
 
+// zawartośc tej funkcji wrzuciłem do chagneTemplate() i zadziałał powrót z widoku edycji do domyślnego
   function handleSubmit(e) {
     e.preventDefault();
     props.editTask(props.id, newName);
     setNewName("");
-    setIsEditing(false);
-  
   }
 
   function changeTemplate(event) {
     if (event.key === "Enter") {
-      handleSubmit();
+      event.preventDefault();
+      props.editTask(props.id, newName);
+      setNewName(props.name);
       setIsEditing(false);
     }
-
   }
 
   const editingTemplate = (

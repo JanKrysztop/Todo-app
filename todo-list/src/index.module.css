@@ -169,11 +169,11 @@ li:hover .destroy {
 
 .todoCount {
   float: left;
+  margin-right: 90px;
 }
 
 .buttons{
   align-self: center;
-  margin-left: 90px;
 }
 
 .footer button {
