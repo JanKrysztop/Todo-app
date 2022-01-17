@@ -34,19 +34,28 @@ function App(props) {
     setTasks(updateTask);
   }
 
-  //Funkcja zaznaczania wszystkich checkboxów(nie działa)
-
   function toggleAllCompleted() {
-    console.log(tasks)
+    const shouldComplete = tasks.some(task => {
+      return !task.completed;
+    })
     const updateAll = tasks.map((task) => {
-      return { ...task, completed: !task.completed };
+      return { ...task, completed: shouldComplete };
     });
     setTasks(updateAll);
+    console.log(tasks);
   }
 
   function deleteTask(id) {
     const remainingTasks = tasks.filter((task) => id !== task.id);
     setTasks(remainingTasks);
+  }
+
+  function clearCompleted() {
+    setTasks((tasks) => {
+      return tasks.filter((task) => {
+        return !task.completed;
+      })
+    })
   }
 
   function editTask(id, newName) {
@@ -98,7 +107,8 @@ function App(props) {
         <footer className={style.footer}>
           <p className={style.todoCount}>{footerCounter} left</p>
           {/* 6.Wrzucamy const filterList zamiast 3x <FilterButton /> */}
-          {filterList}
+          <div style={{display: "flex", alignItems: "center" }}>{filterList}</div>
+          <button onClick={clearCompleted}>Clear completed</button>
         </footer>
       </div>
     </>

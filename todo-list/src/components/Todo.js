@@ -34,7 +34,6 @@ function Todo(props) {
   const viewTemplate = (
     <div onDoubleClick={() => setIsEditing(true)}>
       <input
-
         type="checkbox"
         id={props.id}
         checked={props.completed}
