@@ -34,10 +34,10 @@ function Todo(props) {
   const viewTemplate = (
     <div onDoubleClick={() => setIsEditing(true)}>
       <input
-        className={props.completed ? "" : ""}
+
         type="checkbox"
         id={props.id}
-        defaultChecked={props.completed}
+        checked={props.completed}
         onChange={() => props.toggleTaskCompleted(props.id)}
       />
       <label htmlFor={props.id}>{props.name}</label>
