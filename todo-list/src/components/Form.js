@@ -26,7 +26,7 @@ function Form(props) {
   return (
     <form className={style.header} onSubmit={handleSubmit}>
       {/* tutaj wrzuciłem atrybut type zeby przy wcisnięciu button nie dodawał nowego taska */}
-      <button type="button" onClick={() => props.toggleAllCompleted(props.task)}>
+      <button type="button" onClick={() => props.toggleAllCompleted()}>
         <img src={Chevron} alt="chevron" />
       </button>
       <input

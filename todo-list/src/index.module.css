@@ -187,3 +187,6 @@ li:hover .destroy {
 .footer button:hover {
   border-color: rgba(175, 47, 47, 0.1);
 }
+.footer button:focus {
+  border-color: rgba(175, 47, 47, 0.1);
+}
