@@ -180,9 +180,20 @@ li:hover .destroy {
   background-color: rgb(253, 253, 253);
 }
 
+
+
 .footer button:hover {
   border-color: rgba(175, 47, 47, 0.1);
 }
 .footer button:focus {
   border-color: rgba(175, 47, 47, 0.1);
+}
+
+.clearButton {
+  display: flex;
+  align-items: center;
+}
+
+.clearButton:hover {
+  text-decoration: underline;
 }

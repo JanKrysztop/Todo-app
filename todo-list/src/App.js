@@ -5,6 +5,8 @@ import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import { nanoid } from "nanoid";
 
+
+
 //2.tworzymy obiekt FILTER_MAP którego wartości to fukncje którymi będziemy zmieniac widoki tasków wszystkie/niewykonane/wykonane
 const FILTER_MAP = {
   All: () => true,
@@ -35,9 +37,9 @@ function App(props) {
   }
 
   function toggleAllCompleted() {
-    const shouldComplete = tasks.some(task => {
+    const shouldComplete = tasks.some((task) => {
       return !task.completed;
-    })
+    });
     const updateAll = tasks.map((task) => {
       return { ...task, completed: shouldComplete };
     });
@@ -54,8 +56,8 @@ function App(props) {
     setTasks((tasks) => {
       return tasks.filter((task) => {
         return !task.completed;
-      })
-    })
+      });
+    });
   }
 
   function editTask(id, newName) {
@@ -69,20 +71,21 @@ function App(props) {
   }
 
   //9.Dodajemy filter(FILTER_MAP[filter]) przed mapowaniem zeby renderowały nam sie tylko taski które zaznaczymy na przycisku filterList
+  
   const taskList = tasks
-    .filter(FILTER_MAP[filter])
-    .map((task) => (
-      <Todo
-        id={task.id}
-        name={task.name}
-        completed={task.completed}
-        key={task.id}
-        toggleTaskCompleted={toggleTaskCompleted}
-        deleteTask={deleteTask}
-        editTask={editTask}
-      />
+  .filter(FILTER_MAP[filter])
+  .map((task) => (
+    <Todo
+    id={task.id}
+    name={task.name}
+    completed={task.completed}
+    key={task.id}
+    toggleTaskCompleted={toggleTaskCompleted}
+    deleteTask={deleteTask}
+    editTask={editTask}
+    />
     ));
-  //5.Tworzymy const filterList w którym mapujemy listę FILTER_NAMES (podobnie jak robiliśmy z <Todo /> kilka linijek wyżej)
+    //5.Tworzymy const filterList w którym mapujemy listę FILTER_NAMES (podobnie jak robiliśmy z <Todo /> kilka linijek wyżej)
   const filterList = FILTER_NAMES.map((name) => (
     <FilterButton
       key={name}
@@ -100,16 +103,33 @@ function App(props) {
     <>
       <h1>todos</h1>
       <div className={style.todo}>
-        <Form addTask={addTask} toggleAllCompleted={toggleAllCompleted} />
+        <Form
+          addTask={addTask}
+          toggleAllCompleted={toggleAllCompleted}
+          taskList={taskList.length}
+          filter={filter}
+        />
 
-        <ul className={style.list}>{taskList}</ul>
+        <ul className={style.list}>
+          {taskList}
+        </ul>
 
-        <footer className={style.footer}>
-          <p className={style.todoCount}>{footerCounter} left</p>
-          {/* 6.Wrzucamy const filterList zamiast 3x <FilterButton /> */}
-          <div style={{display: "flex", alignItems: "center" }}>{filterList}</div>
-          <button onClick={clearCompleted}>Clear completed</button>
-        </footer>
+        {taskList.length === 0 && filter === "All" ? null : (
+          <footer className={style.footer}>
+            <p className={style.todoCount}>{footerCounter} left</p>
+            {/* 6.Wrzucamy const filterList zamiast 3x <FilterButton /> */}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {filterList}
+            </div>
+            <button
+              className={style.clearButton}
+              onClick={clearCompleted}
+              style={{ border: "none" }}
+            >
+              Clear completed
+            </button>
+          </footer>
+        )}
       </div>
     </>
   );

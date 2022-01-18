@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import style from "../index.module.css";
 import Chevron from "../icons/Chevron.png";
 
+
 function Form(props) {
   const [name, setName] = useState("");
 
@@ -26,9 +27,10 @@ function Form(props) {
   return (
     <form className={style.header} onSubmit={handleSubmit}>
       {/* tutaj wrzuciłem atrybut type zeby przy wcisnięciu button nie dodawał nowego taska */}
-      <button type="button" onClick={() => props.toggleAllCompleted()}>
+      {props.taskList === 0 && props.filter === "All" ? null :
+      (<button type="button" onClick={() => props.toggleAllCompleted()}>
         <img src={Chevron} alt="chevron" />
-      </button>
+      </button>)}
       <input
         type="text"
         className={style.input}
