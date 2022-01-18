@@ -14,7 +14,17 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App() {
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState(() => {
+    const savedFilter = localStorage.getItem("filter");
+    if(savedFilter) {
+      return JSON.parse(savedFilter);
+    } else {
+      return "All";
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem("filter", JSON.stringify(filter));
+  }, [filter]);
 
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem("tasks");
