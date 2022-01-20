@@ -16,12 +16,13 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 function App() {
   const [filter, setFilter] = useState(() => {
     const savedFilter = localStorage.getItem("filter");
-    if(savedFilter) {
+    if (savedFilter) {
       return JSON.parse(savedFilter);
     } else {
       return "All";
     }
   });
+
   useEffect(() => {
     localStorage.setItem("filter", JSON.stringify(filter));
   }, [filter]);
@@ -34,8 +35,41 @@ function App() {
       return [];
     }
   });
+
+  // useEffect(() => {
+  //   fetch("http://localhost:8000/tasks"
+  //     // headers: {
+  //     //   "Accept": "application/json",
+  //     //   "Content-Type": "application/json",
+  //     // },
+  //     // method: 'PATCH',
+  //     // body: JSON.stringify({tasks: tasks})
+  //   )
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       setTasks(data);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    if (tasks.length) {
+      fetch("http://localhost:8000/tasks/1", {
+        headers: {
+          // Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "PATCH",
+        body: JSON.stringify(tasks),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setTasks(data);
+        });
+    }
   }, [tasks]);
 
   function addTask(name) {
