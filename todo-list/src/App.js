@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import style from "./index.module.css";
 import Todo from "./components/Todo.js";
 import Form from "./components/Form";
@@ -13,15 +13,51 @@ const FILTER_MAP = {
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
+const patchTask = (task) => {
+  return fetch(`http://localhost:8000/tasks/${task.id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "PATCH",
+    body: JSON.stringify(task),
+  }).then((res) => {
+    return res.json();
+  });
+};
+
+const postTask = (task) => {
+  return fetch("http://localhost:8000/tasks", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(task),
+  }).then((res) => {
+    return res.json();
+  });
+};
+
+const removeTask = (id) => {
+  return fetch(`http://localhost:8000/tasks/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "DELETE",
+  }).then((res) => {
+    return res.json();
+  });
+};
+
 function App() {
   const [filter, setFilter] = useState(() => {
     const savedFilter = localStorage.getItem("filter");
-    if(savedFilter) {
+    if (savedFilter) {
       return JSON.parse(savedFilter);
     } else {
       return "All";
     }
   });
+
   useEffect(() => {
     localStorage.setItem("filter", JSON.stringify(filter));
   }, [filter]);
@@ -34,23 +70,42 @@ function App() {
       return [];
     }
   });
+
+  // useCallback to make sure that this function is THE SAME function on each render
+  const syncTasks = useCallback(() => {
+    fetch("http://localhost:8000/tasks")
+      .then((res) => {
+        return res.json();
+      })
+      .then(setTasks);
+  }, []);
+
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+    syncTasks();
+  }, []);
 
   function addTask(name) {
     const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
-    setTasks([...tasks, newTask]);
+    // setTasks([...tasks, newTask]);
+    postTask(newTask).then(syncTasks);
   }
 
   function toggleTaskCompleted(id) {
-    const updateTask = tasks.map((task) => {
-      if (id === task.id) {
-        return { ...task, completed: !task.completed };
-      }
-      return task;
-    });
-    setTasks(updateTask);
+    const task = tasks.find((task) => task.id === id);
+
+    patchTask({
+      ...task,
+      completed: !task.completed,
+    }).then(syncTasks);
+  }
+
+  function editTask(id, newName) {
+    const task = tasks.find((task) => task.id === id);
+
+    patchTask({
+      ...task,
+      name: newName,
+    }).then(syncTasks);
   }
 
   function toggleAllCompleted() {
@@ -61,15 +116,21 @@ function App() {
       return { ...task, completed: shouldComplete };
     });
     setTasks(updateAll);
-    console.log(tasks);
+
+    //For each i update dla każdego
   }
 
   function deleteTask(id) {
-    const remainingTasks = tasks.filter((task) => id !== task.id);
-    setTasks(remainingTasks);
+    removeTask(id).then(syncTasks);
   }
 
   function clearCompleted() {
+    tasks.forEach((task) => {
+      if (task.completed) {
+        removeTask(task.id);
+      }
+    });
+
     setTasks((tasks) => {
       return tasks.filter((task) => {
         return !task.completed;
@@ -77,15 +138,8 @@ function App() {
     });
   }
 
-  function editTask(id, newName) {
-    const editedTaskList = tasks.map((task) => {
-      if (id === task.id) {
-        return { ...task, name: newName };
-      }
-      return task;
-    });
-    setTasks(editedTaskList);
-  }
+  // const taskCompleted = tasks.filter((task) => !task.completed);
+  // removeTask(taskCompleted).then(syncTasks);
 
   const taskList = tasks
     .filter(FILTER_MAP[filter])
